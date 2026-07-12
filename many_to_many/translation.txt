@@ -1,0 +1,165 @@
+i am cold	j ai froid
+i am hot	j ai chaud
+i am hungry	j ai faim
+i am thirsty	j ai soif
+i am tired	je suis fatigue
+i am happy	je suis heureux
+i am sad	je suis triste
+i am afraid	j ai peur
+i am busy	je suis occupe
+i am ready	je suis pret
+i am late	je suis en retard
+i am sick	je suis malade
+i am here	je suis ici
+i am a student	je suis etudiant
+i am a doctor	je suis medecin
+i am a teacher	je suis professeur
+i am an engineer	je suis ingenieur
+you are my friend	tu es mon ami
+you are kind	tu es gentil
+you are right	tu as raison
+you are wrong	tu as tort
+you are welcome	je t en prie
+he is a doctor	il est medecin
+he is tall	il est grand
+he is short	il est petit
+he is my brother	il est mon frere
+she is a teacher	elle est professeur
+she is beautiful	elle est belle
+she is my sister	elle est ma soeur
+we are at home	nous sommes a la maison
+we are friends	nous sommes amis
+we are ready	nous sommes prets
+they are at school	ils sont a l ecole
+they are happy	ils sont heureux
+it is raining	il pleut
+it is snowing	il neige
+it is sunny	il fait beau
+it is cold today	il fait froid aujourd hui
+it is hot today	il fait chaud aujourd hui
+it is late	il est tard
+it is early	il est tot
+i like coffee	j aime le cafe
+i like tea	j aime le the
+i like music	j aime la musique
+i like to read	j aime lire
+i like to swim	j aime nager
+i like to travel	j aime voyager
+she likes music	elle aime la musique
+he likes books	il aime les livres
+they like sports	ils aiment le sport
+i love you	je t aime
+i miss you	tu me manques
+i need help	j ai besoin d aide
+i need money	j ai besoin d argent
+i need time	j ai besoin de temps
+i want water	je veux de l eau
+i want food	je veux de la nourriture
+i want to go home	je veux rentrer a la maison
+i want to sleep	je veux dormir
+i see a dog	je vois un chien
+i see a cat	je vois un chat
+i see a bird	je vois un oiseau
+i hear music	j entends de la musique
+i understand you	je te comprends
+i do not understand	je ne comprends pas
+i do not know	je ne sais pas
+i do not care	je m en fiche
+i can help you	je peux t aider
+i cannot help you	je ne peux pas t aider
+can you help me	peux tu m aider
+could you repeat that	peux tu repeter cela
+this is my house	c est ma maison
+this is your book	c est ton livre
+this is a good idea	c est une bonne idee
+this is not fair	ce n est pas juste
+that is true	c est vrai
+that is false	c est faux
+that is interesting	c est interessant
+that is enough	ca suffit
+what is your name	quel est ton nom
+what is this	qu est ce que c est
+what time is it	quelle heure est il
+what do you want	que veux tu
+where is the bathroom	ou est la salle de bain
+where do you live	ou habites tu
+where are you going	ou vas tu
+when is your birthday	quand est ton anniversaire
+who is that	qui est ce
+why are you sad	pourquoi es tu triste
+how are you	comment vas tu
+how old are you	quel age as tu
+how much does it cost	combien ca coute
+how do you say this	comment dis tu cela
+good morning	bonjour
+good afternoon	bon apres midi
+good evening	bonsoir
+good night	bonne nuit
+goodbye	au revoir
+see you later	a plus tard
+see you tomorrow	a demain
+see you soon	a bientot
+have a nice day	passe une bonne journee
+welcome	bienvenue
+please	s il te plait
+thank you	merci
+thank you very much	merci beaucoup
+you re welcome	de rien
+excuse me	excuse moi
+i am sorry	je suis desole
+no problem	pas de probleme
+of course	bien sur
+maybe	peut etre
+i agree	je suis d accord
+i disagree	je ne suis pas d accord
+i am not sure	je ne suis pas sur
+good luck	bonne chance
+congratulations	felicitations
+happy birthday	joyeux anniversaire
+merry christmas	joyeux noel
+happy new year	bonne annee
+one	un
+two	deux
+three	trois
+four	quatre
+five	cinq
+six	six
+seven	sept
+eight	huit
+nine	neuf
+ten	dix
+monday	lundi
+tuesday	mardi
+wednesday	mercredi
+thursday	jeudi
+friday	vendredi
+saturday	samedi
+sunday	dimanche
+today	aujourd hui
+tomorrow	demain
+yesterday	hier
+now	maintenant
+later	plus tard
+always	toujours
+never	jamais
+sometimes	parfois
+i live in paris	j habite a paris
+i work in an office	je travaille dans un bureau
+i study english	j etudie l anglais
+i speak french	je parle francais
+i drive a car	je conduis une voiture
+i walk to school	je vais a l ecole a pied
+i eat breakfast at seven	je prends le petit dejeuner a sept heures
+i go to bed at ten	je me couche a dix heures
+the sun is shining	le soleil brille
+the sky is blue	le ciel est bleu
+the water is cold	l eau est froide
+the food is delicious	la nourriture est delicieuse
+the movie was great	le film etait genial
+the book is interesting	le livre est interessant
+my family is big	ma famille est grande
+my house is small	ma maison est petite
+my car is new	ma voiture est neuve
+the dog is running	le chien court
+the cat is sleeping	le chat dort
+the children are playing	les enfants jouent
