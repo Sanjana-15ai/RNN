@@ -42,7 +42,7 @@ st.set_page_config(page_title="LINGUA // Neural Signal Decoder", page_icon="◈"
 
 SOS, EOS, PAD = "<sos>", "<eos>", "<pad>"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATASET_PATH = os.path.join(BASE_DIR, "translation.txt")"
+DATASET_PATH = os.path.join(BASE_DIR, "translation.txt")
 
 # ----------------------------------------------------------------------
 # Design tokens + global CSS
