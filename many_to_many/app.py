@@ -23,6 +23,7 @@ Run:
     streamlit run app.py
 """
 
+import os
 import random
 import re
 import unicodedata
@@ -40,7 +41,8 @@ import torch.optim as optim
 st.set_page_config(page_title="LINGUA // Neural Signal Decoder", page_icon="◈", layout="centered")
 
 SOS, EOS, PAD = "<sos>", "<eos>", "<pad>"
-DATASET_PATH = "translation.txt"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATASET_PATH = os.path.join(BASE_DIR, "translation.txt")"
 
 # ----------------------------------------------------------------------
 # Design tokens + global CSS
