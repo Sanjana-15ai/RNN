@@ -15,8 +15,10 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 # ---------------- Configuration ----------------
-MODEL = "spam_model.keras"
-TOKENIZER = "tokenizer.pkl"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL = os.path.join(BASE_DIR, "spam_model.keras")
+TOKENIZER = os.path.join(BASE_DIR, "tokenizer.pkl")
+DATA_PATH = os.path.join(BASE_DIR, "spam.csv")
 
 MAX_WORDS = 5000
 MAX_LEN = 50
@@ -35,7 +37,7 @@ def train_model():
 
     print("training dataset...")
 
-    df = pd.read_csv("spam.csv", encoding="latin-1")
+    df = pd.read_csv(DATA_PATH, encoding="latin-1")
     df = df[["v1", "v2"]]
     df.columns = ["label", "message"]
 
