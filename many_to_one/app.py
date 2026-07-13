@@ -125,245 +125,297 @@ if not os.path.exists(MODEL):
 # ---------------- Streamlit UI ----------------
 st.set_page_config(
     page_title="SMS Spam Detector",
-    page_icon="📱",
+    page_icon="📡",
     layout="centered"
 )
 
-# ---- Custom CSS: dark glass "signal panel" theme (matches Country Explorer) ----
+# ---- Custom CSS: terminal / signal-scanner theme ----
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
 
-html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+html, body, [class*="css"] { font-family: 'JetBrains Mono', monospace; }
 
 .stApp {
     background:
-        radial-gradient(circle at 10% -10%, rgba(123,241,255,0.16) 0%, transparent 40%),
-        radial-gradient(circle at 90% 0%, rgba(244,114,182,0.14) 0%, transparent 45%),
-        radial-gradient(circle at 50% 100%, rgba(167,139,250,0.18) 0%, transparent 50%),
-        linear-gradient(180deg, #0b0a1f 0%, #100c26 60%, #0b0a1f 100%);
+        repeating-linear-gradient(0deg, rgba(57,255,136,0.025) 0px, rgba(57,255,136,0.025) 1px, transparent 1px, transparent 3px),
+        radial-gradient(circle at 15% 0%, rgba(57,255,136,0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 100%, rgba(255,184,107,0.06) 0%, transparent 50%),
+        linear-gradient(180deg, #04060a 0%, #070a10 55%, #04060a 100%);
     background-attachment: fixed;
 }
 
 #MainMenu, footer, header {visibility: hidden;}
-.block-container { padding-top: 2.6rem; max-width: 760px; }
+.block-container { padding-top: 2.4rem; max-width: 700px; }
 
-/* Floating decorative blobs */
-.blob {
+/* ---------- scanning sweep line ---------- */
+.scanline {
     position: fixed;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.35;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #39ff88, transparent);
+    opacity: 0.5;
+    animation: sweep 5s linear infinite;
     z-index: 0;
-    animation: floaty 10s ease-in-out infinite;
 }
-@keyframes floaty {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-25px); }
+@keyframes sweep {
+    0%   { top: 0%; }
+    100% { top: 100%; }
 }
 
-/* ---------- Hero ---------- */
-.hero-wrap { text-align: center; margin-bottom: 2rem; }
+/* ---------- Header ---------- */
+.term-bar {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(57,255,136,0.06);
+    border: 1px solid rgba(57,255,136,0.25);
+    border-radius: 10px 10px 0 0;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.72rem;
+    color: #6ee7a0;
+    letter-spacing: 1.5px;
+}
+.term-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.hero-wrap {
+    text-align: left;
+    margin-bottom: 1.8rem;
+    border: 1px solid rgba(57,255,136,0.25);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 1.4rem 1.6rem 1.6rem 1.6rem;
+    background: rgba(6,10,14,0.6);
+}
 .hero-badge {
     display: inline-block;
-    padding: 0.35rem 1rem;
-    border-radius: 999px;
-    background: rgba(123,241,255,0.1);
-    border: 1px solid rgba(123,241,255,0.3);
-    color: #7bf1ff;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 1.5px;
+    color: #ffb86b;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
 }
+.hero-badge::before { content: "// "; color: #4a5568; }
 .hero-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 3rem;
+    font-size: 2.3rem;
     font-weight: 700;
-    background: linear-gradient(90deg, #7bf1ff 0%, #a78bfa 45%, #f472b6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 0.3rem;
-    letter-spacing: -1px;
-    line-height: 1.1;
+    color: #eafff1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
 }
+.hero-title .cursor {
+    display: inline-block;
+    width: 10px; height: 1.9rem;
+    background: #39ff88;
+    margin-left: 4px;
+    vertical-align: text-bottom;
+    animation: blink 1s step-start infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
 .hero-sub {
-    color: #a9a6c9;
-    font-size: 1.05rem;
+    color: #7a8a94;
+    font-size: 0.92rem;
     font-weight: 400;
-    max-width: 520px;
-    margin: 0 auto;
+    max-width: 540px;
+    line-height: 1.55;
 }
+.hero-sub .accent { color: #39ff88; }
 
 /* ---------- Input card ---------- */
 .input-card {
-    background: rgba(255,255,255,0.045);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 22px;
-    padding: 1.8rem 2rem;
-    backdrop-filter: blur(18px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-    margin-bottom: 1.6rem;
+    background: rgba(8,12,16,0.75);
+    border: 1px solid rgba(57,255,136,0.22);
+    border-radius: 14px;
+    padding: 1.5rem 1.6rem;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3), 0 14px 40px rgba(0,0,0,0.5);
+    margin-bottom: 1.5rem;
     position: relative;
     z-index: 1;
 }
 .input-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 1.6px;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    color: #8be9fd;
-    font-weight: 600;
-    margin-bottom: 0.8rem;
+    color: #39ff88;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
 }
+.input-label::before { content: "> "; color: #4a5568; }
 
+/* Force an OPAQUE dark textarea so light text is always readable,
+   regardless of Streamlit's own theme underneath it. */
 .stTextArea textarea {
-    background: rgba(255,255,255,0.05) !important;
-    border: 1px solid rgba(255,255,255,0.14) !important;
-    border-radius: 14px !important;
-    color: #f5f3ff !important;
-    font-size: 1rem !important;
+    background-color: #0b0f13 !important;
+    background-image: none !important;
+    border: 1px solid rgba(57,255,136,0.3) !important;
+    border-radius: 10px !important;
+    color: #d6ffe4 !important;
+    caret-color: #39ff88 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.96rem !important;
     padding: 14px !important;
+    -webkit-text-fill-color: #d6ffe4 !important;
 }
 .stTextArea textarea:focus {
-    border-color: rgba(167,139,250,0.6) !important;
-    box-shadow: 0 0 0 3px rgba(167,139,250,0.15) !important;
+    border-color: #39ff88 !important;
+    box-shadow: 0 0 0 3px rgba(57,255,136,0.15) !important;
 }
-.stTextArea textarea::placeholder { color: #6f6c93 !important; }
+.stTextArea textarea::placeholder { color: #4a5568 !important; opacity: 1 !important; }
+/* Some Streamlit versions wrap the textarea in a themed div; neutralize it too */
+div[data-baseweb="textarea"] { background-color: #0b0f13 !important; }
 
 div.stButton > button {
-    background: linear-gradient(90deg, #7bf1ff, #a78bfa, #f472b6);
-    background-size: 200% auto;
-    color: #0b0a1f;
+    background: #0b0f13;
+    color: #39ff88 !important;
     font-weight: 700;
-    border: none;
-    border-radius: 14px;
-    padding: 0.75rem 1.6rem;
-    font-family: 'Space Grotesk', sans-serif;
-    letter-spacing: 0.3px;
-    font-size: 1rem;
+    border: 1.5px solid #39ff88 !important;
+    border-radius: 10px;
+    padding: 0.7rem 1.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
     width: 100%;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 24px rgba(167,139,250,0.35);
+    transition: all 0.2s ease;
 }
 div.stButton > button:hover {
-    background-position: right center;
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(167,139,250,0.5);
+    background: #39ff88;
+    color: #04060a !important;
+    box-shadow: 0 0 22px rgba(57,255,136,0.5);
 }
-div.stButton > button p { color: #0b0a1f !important; font-weight: 700 !important; }
+div.stButton > button p { color: inherit !important; font-weight: 700 !important; }
 
 /* ---------- Result card ---------- */
 .field-card {
-    background: linear-gradient(150deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    animation: cardIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    margin-top: 1.5rem;
+    background: rgba(8,12,16,0.8);
+    border: 1px solid rgba(57,255,136,0.2);
+    border-radius: 14px;
+    padding: 1.8rem 1.6rem;
+    text-align: left;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.5);
+    animation: cardIn 0.4s ease both;
+    margin-top: 1.4rem;
 }
-.field-card.spam { border-color: rgba(244,114,182,0.5); box-shadow: 0 16px 40px rgba(244,114,182,0.15); }
-.field-card.ham { border-color: rgba(123,241,255,0.5); box-shadow: 0 16px 40px rgba(123,241,255,0.15); }
+.field-card.spam { border-color: rgba(255,107,107,0.55); box-shadow: 0 0 30px rgba(255,107,107,0.12); }
+.field-card.ham  { border-color: rgba(57,255,136,0.55); box-shadow: 0 0 30px rgba(57,255,136,0.12); }
 
 @keyframes cardIn {
-    from { opacity: 0; transform: translateY(22px) scale(0.98); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-.result-emoji { font-size: 2.6rem; margin-bottom: 0.4rem; }
+.result-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+}
+.result-tag.spam { color: #ff6b6b; border: 1px solid rgba(255,107,107,0.5); background: rgba(255,107,107,0.08); }
+.result-tag.ham  { color: #39ff88; border: 1px solid rgba(57,255,136,0.5); background: rgba(57,255,136,0.08); }
+
 .result-label {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 700;
-    color: #ffffff;
-    margin: 0.1rem 0;
+    color: #eafff1;
+    margin: 0.1rem 0 0.3rem 0;
 }
-.result-line { color: #a9a6c9; font-size: 0.98rem; margin-bottom: 0.4rem; }
+.result-line { color: #8a9aa4; font-size: 0.92rem; margin-bottom: 0.9rem; }
 
 .stat-pill {
     display: inline-block;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.14);
-    color: #d5d2f5;
-    padding: 0.4rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #b9c4c9;
+    padding: 0.35rem 0.9rem;
     border-radius: 999px;
-    font-size: 0.85rem;
-    margin-top: 1rem;
+    font-size: 0.78rem;
     font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
 /* Confidence bar */
 .stProgress > div > div {
-    background: linear-gradient(90deg, #7bf1ff, #a78bfa, #f472b6) !important;
+    background: linear-gradient(90deg, #39ff88, #ffb86b) !important;
 }
 .stProgress > div {
-    background: rgba(255,255,255,0.08) !important;
+    background: rgba(255,255,255,0.06) !important;
+    border-radius: 999px !important;
 }
 
 /* Expander styling */
 div[data-testid="stExpander"] {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    margin-top: 1.2rem;
+    background: rgba(6,10,14,0.7);
+    border: 1px solid rgba(57,255,136,0.18);
+    border-radius: 12px;
+    margin-top: 1.1rem;
 }
 div[data-testid="stExpander"] summary {
-    color: #d5d2f5 !important;
-    font-family: 'Space Grotesk', sans-serif;
+    color: #6ee7a0 !important;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
 }
 </style>
 
-<div class="blob" style="width:340px; height:340px; top:-100px; left:-120px; background:#7bf1ff;"></div>
-<div class="blob" style="width:380px; height:380px; top:-60px; right:-140px; background:#f472b6; animation-delay: 2s;"></div>
+<div class="scanline"></div>
 """, unsafe_allow_html=True)
 
 # ---- Header ----
 st.markdown("""
+    <div class="term-bar">
+        <span class="term-dot" style="background:#ff6b6b;"></span>
+        <span class="term-dot" style="background:#ffb86b;"></span>
+        <span class="term-dot" style="background:#39ff88;"></span>
+        &nbsp;spam_detector.rnn
+    </div>
     <div class="hero-wrap">
-        <div class="hero-badge">🧠 Simple RNN · Many-to-One</div>
-        <div class="hero-title">SMS Spam Detector</div>
-        <div class="hero-sub">Paste any SMS message and let a recurrent neural network
-        read between the lines — spam or safe, decided in real time.</div>
+        <div class="hero-badge">simple rnn · many-to-one</div>
+        <div class="hero-title">SMS Spam Detector<span class="cursor"></span></div>
+        <div class="hero-sub">Drop in a message below. A recurrent neural network reads it
+        token by token and decides — <span class="accent">safe</span> or
+        <span class="accent">spam</span> — in real time.</div>
     </div>
 """, unsafe_allow_html=True)
 
 # ---- Input card ----
 st.markdown('<div class="input-card">', unsafe_allow_html=True)
-st.markdown('<div class="input-label">✍️ Message</div>', unsafe_allow_html=True)
+st.markdown('<div class="input-label">message input</div>', unsafe_allow_html=True)
 message = st.text_area(
     " ",
     placeholder="e.g. Congratulations! You've won a free prize, claim now...",
     label_visibility="collapsed",
 )
-predict_clicked = st.button("🔍 Analyze Message")
+predict_clicked = st.button("[ ANALYZE MESSAGE ]")
 st.markdown('</div>', unsafe_allow_html=True)
 
 if predict_clicked:
     if message.strip() == "":
         st.warning("⚠️ Please enter a message first.")
     else:
-        with st.spinner("🧠 Reading between the lines..."):
+        with st.spinner("Scanning token sequence..."):
             prediction, probability = predict_sms(message)
 
         confidence_pct = round(probability * 100, 2)
         card_class = "spam" if prediction == "Spam" else "ham"
-        emoji = "🚨" if prediction == "Spam" else "✅"
+        tag_text = "threat detected" if prediction == "Spam" else "signal clean"
         message_line = (
-            "This looks like SPAM — be careful!" if prediction == "Spam"
-            else "This looks like a normal, safe message."
+            "This message shows spam-like patterns — proceed with caution."
+            if prediction == "Spam"
+            else "No spam indicators found in this message."
         )
 
         # ---- Result card ----
         st.markdown(f"""
             <div class="field-card {card_class}">
-                <div class="result-emoji">{emoji}</div>
+                <span class="result-tag {card_class}">{tag_text}</span>
                 <div class="result-label">{prediction.upper()}</div>
                 <div class="result-line">{message_line}</div>
-                <span class="stat-pill">Confidence · {confidence_pct}%</span>
+                <span class="stat-pill">confidence · {confidence_pct}%</span>
             </div>
         """, unsafe_allow_html=True)
 
@@ -371,7 +423,7 @@ if predict_clicked:
         st.progress(int(confidence_pct))
 
         # ---- Extra detail expander ----
-        with st.expander("🔬 See technical details"):
+        with st.expander("view technical details"):
             st.write(f"**Cleaned input:** `{clean_text(message)}`")
             st.write(f"**Raw model probability (spam):** `{round(probability, 4)}`")
             st.write(f"**Max sequence length:** {MAX_LEN} tokens")
